@@ -1,19 +1,18 @@
 ##--------- VPC
 resource "aws_vpc" "vpc" {
-  cidr_block           = "${var.vpc_cidr}"
-  
+  cidr_block = "${var.vpc_cidr}"
+
   tags {
-    Name        = "my_vpc"
+    Name = "my_vpc"
   }
 }
-
 
 ## Internet Gateway
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "Internet Gateway"
+    Name = "Internet Gateway"
   }
 }
 
@@ -22,7 +21,7 @@ resource "aws_route_table" "routetable_public" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "Public Routetable"
+    Name = "Public Routetable"
   }
 }
 
@@ -38,16 +37,14 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = "${data.aws_region.current.name}a"
 
   tags {
-    Name        = "Public Subnet"
+    Name = "Public Subnet"
   }
 }
-
 
 resource "aws_route_table_association" "public_subnet_a" {
   subnet_id      = "${aws_subnet.public_subnet.id}"
   route_table_id = "${aws_route_table.routetable_public.id}"
 }
-
 
 ##------- Nat Gateway
 
@@ -66,15 +63,13 @@ resource "aws_route" "nat_route" {
   nat_gateway_id         = "${aws_nat_gateway.nat.id}"
 }
 
-
-
 ##-------- Private Subnet
 
 resource "aws_route_table" "routetable_nat" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "Nat Routetable"
+    Name = "Nat Routetable"
   }
 }
 
@@ -84,7 +79,7 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = "${data.aws_region.current.name}a"
 
   tags {
-    Name        = "Private Subnet"
+    Name = "Private Subnet"
   }
 }
 
